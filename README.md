@@ -30,7 +30,7 @@ LLM credentials stay on the host and are injected through sbx's credential proxy
 ./setup.sh
 ```
 
-This builds the backend (Presidio + Firecrawl + sanitizer), creates the `secure-hermes` sandbox, and drops you into a shell. Type `hermes` to launch the agent.
+This builds the Presidio + Firecrawl backend, creates the `secure-hermes` sandbox, and drops you into an interactive shell. Type `hermes` to launch the agent.
 
 The workspace defaults to `~/secure-hermes-workspace/` (override with `HERMES_WORKSPACE=...`). It's seeded on first run from the repo's `workspace-template/` — including `AGENTS.md`, which Hermes auto-loads into its system prompt. Edit `AGENTS.md` in the workspace to add project-specific conventions; seeding never overwrites existing files.
 
@@ -40,7 +40,7 @@ Re-attach later (preserving installs, memory, and history):
 sbx run secure-hermes      # or pick it from the sbx TUI, or re-run ./setup.sh
 ```
 
-> `sbx rm secure-hermes` wipes Hermes' internal state inside the VM (`~/.hermes`, OAuth tokens, memory, history). Your workspace directory on the host is left alone — neither `sbx rm` nor `docker compose down -v` touch it.
+> `sbx rm secure-hermes` wipes Hermes' internal state inside the VM (`~/.hermes`, OAuth tokens, memory, history). Your workspace directory on the host is left alone — neither `sbx rm` nor `docker compose down -v` remove it.
 
 ## Credentials
 

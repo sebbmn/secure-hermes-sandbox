@@ -16,11 +16,12 @@ LLM credentials stay on the host and are injected through sbx's credential proxy
 
 ## Prerequisites
 
-- macOS with Docker Desktop running
+- macOS or Linux with Docker Desktop (or Docker Engine) running
 - Docker Sandboxes CLI:
   ```sh
-  brew install docker/tap/sbx
-  sbx login
+  brew install docker/tap/sbx   # macOS
+  # or install from https://docs.docker.com/ai/sandboxes/ for your platform
+  sbx login                     # required before first run
   ```
 - ~6 GB free disk for the Firecrawl stack
 
@@ -141,6 +142,7 @@ docker compose down -v     # also drop backend volumes
 ## Troubleshooting
 
 - **`agent "hermes" not found`** — Hermes is not an sbx built-in. Use `./setup.sh` (or `sbx run --name secure-hermes --kit ./sandbox shell`).
-- **Search returns 404** — rebuild the proxy: `docker compose up -d --build sanitizer-proxy`.
-- **Provider call returns 401** — set the host secret (`sbx secret set -g <provider>`) and recreate the sandbox.
+- **Search returns 404** — the sanitizer proxy returned a 404 to Hermes. Rebuild it: `docker compose up -d --build sanitizer-proxy`.
+- **Provider call returns 401** — set the host secret (`sbx secret set -g <provider>`) and recreate the sandbox (`sbx rm secure-hermes && ./setup.sh`).
 - **Weak/no search results** — set `SEARXNG_ENDPOINT` in `.env`; otherwise Firecrawl falls back to rate-limited Google scraping.
+- **Firecrawl container won't start** — on first boot it pulls images and may take 30–60s. Check status with `docker compose ps` and logs with `docker compose logs -f firecrawl`.

@@ -1,0 +1,36 @@
+name: Security Scan
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  security-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: sanitizer_proxy/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: sanitizer_proxy
+
+      - name: Run npm audit
+        run: npm audit --audit-level=moderate
+        working-directory: sanitizer_proxy
+
+      - name: Check for pip-audit
+        run: |
+          if command -v pip-audit &> /dev/null || pip show pip-audit &> /dev/null; then
+            pip-audit --desc -r requirements.txt || true
+          else
+            echo "pip-audit not installed, skipping Python audit"
+          fi

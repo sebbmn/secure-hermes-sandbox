@@ -4,7 +4,7 @@ name: hermes-secure
 displayName: Hermes (Secure Sandbox)
 description: >-
   Mixin on top of the built-in `shell` agent. Installs Hermes and points
-  its web search at a host-side Presidio + Firecrawl proxy. LLM credentials
+  it's web search at a host-side Presidio + Firecrawl proxy. LLM credentials
   (anthropic, openai, openrouter) are already proxy-managed by `shell` — we
   only add Hermes-specific config here.
 

@@ -32,7 +32,7 @@ LLM credentials stay on the host and are injected through sbx's credential proxy
 
 This builds the backend (Presidio + Firecrawl + sanitizer), creates the `secure-hermes` sandbox, and drops you into a shell. Type `hermes` to launch the agent.
 
-The workspace defaults to `~/secure-hermes-workspace/` (override with `HERMES_WORKSPACE=...`). It's seeded on first run from the repo's `workspace-template/` — including `AGENTS.md`, which Hermes auto-loads into its system prompt. Edit `AGENTS.md` in the workspace to add project-specific conventions; seeding never overwrites existing files.
+The workspace defaults to `~/secure-hermes-workspace/` (override with `HERMES_WORKSPACE=...`). It's seeded on first run from the repo's `workspace-template/` — including `AGENTS.md`, which Hermes auto-loads into it's system prompt. Edit `AGENTS.md` in the workspace to add project-specific conventions; seeding never overwrites existing files.
 
 Re-attach later (preserving installs, memory, and history):
 
@@ -92,7 +92,7 @@ docker compose logs -f sanitizer-proxy
 
 ## Network Policy
 
-Web search has its own dedicated path through the sanitizer proxy (above). Everything else — package managers, code hosts, AI provider APIs, OAuth — leaves the sandbox via sbx's HTTP/HTTPS policy proxy, with three allowlist layers composed together:
+Web search has it's own dedicated path through the sanitizer proxy (above). Everything else — package managers, code hosts, AI provider APIs, OAuth — leaves the sandbox via sbx's HTTP/HTTPS policy proxy, with three allowlist layers composed together:
 
 1. **Host baseline** — chosen on first `sbx` run. The default _Balanced_ baseline pre-allows package managers (npm, PyPI, crates.io, …), code hosts (GitHub, GitLab, …), and major AI APIs so common workflows just work. _Open_ allows everything; _Locked Down_ denies everything not explicitly allowed. Reset with `sbx policy reset`.
 2. **Kit additions** — `sandbox/spec.yaml` → `network.allowedDomains`, applied at sandbox creation. Currently covers the sanitizer proxy and install-time mirrors (Nous Portal, GitHub, PyPI, Debian) so setup works under any baseline.
